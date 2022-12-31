@@ -20,7 +20,7 @@ def gen_pos_random() -> tuple[int, int]:
     return pox_x, pox_y
 
 
-def update_moviment(velocity: float, pos: float, posCenter: int) -> float:
+def update_movement(velocity: float, pos: float, posCenter: int) -> float:
     if pos >= posCenter:
         return -velocity
     elif pos in range(posCenter - 10, posCenter + 10):
@@ -46,8 +46,8 @@ class Enemy(Entity):
 
     def movement(self):
         c_w, c_h = get_pos_center()
-        pos_X = update_moviment(self.vel, self.rect.x, c_w)
-        pos_Y = update_moviment(self.vel, self.rect.y, c_h)
+        pos_X = update_movement(self.vel, self.rect.x, c_w)
+        pos_Y = update_movement(self.vel, self.rect.y, c_h)
 
         if self.alive():
             self.rect.move_ip(pos_X, pos_Y)

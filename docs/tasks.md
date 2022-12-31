@@ -1,0 +1,22 @@
+- [x] **main.py**
+  - [x] Caption
+  - [x] Clock - Frames
+  - [x] Display
+- [x] **player.py**
+  - [ ] Animation (Radius, Sprite)
+  - [ ] Collision and Attack
+  - [x] Radius
+  - [x] Sprite
+- [x] **enemy.py**
+  - [ ] Animation (Sprite)
+  - [x] Movement
+  - [x] Particles
+  - [x] Sprites
+  - [x] Collision with Radius and Player
+- [x] **layout**
+  - [x] Enemies
+  - [ ] Fragments (currency trading)
+  - [ ] Life
+  - [x] Map
+  - [x] Score
+  - [ ] Upgrades (Damage, Special)
