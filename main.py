@@ -13,10 +13,10 @@ class Main:
         self.clock = pg.time.Clock()
         self.main_screen = pg.display.set_mode(
             DISPLAY, pg.SCALED | pg.RESIZABLE
-        )       
-                
-        soundtrack = pg.mixer.Sound('static/soundtrack/main.mp3')
-        soundtrack.play(-1)
+        )
+
+        # soundtrack = pg.mixer.Sound('static/soundtrack/main.mp3')
+        # soundtrack.play(-1)
 
         from src.game import GameController
 
@@ -52,7 +52,7 @@ class Main:
             )
         )
         pg.display.update()
-        
+
 
 if __name__ == '__main__':
     main = Main()

@@ -1,34 +1,23 @@
 import pygame as pg
 
 from .enemy.entity import Enemy
+from .layout.layout import AliveEnemies, Map, Score
 from .player.entity import Player
-
-WHITE = (255, 255, 255)
 
 
 class GameController:
     is_active = True
     group_enemy = pg.sprite.Group()
-    font = pg.font.SysFont('garuda', 20)
+    main_screen = pg.display.get_surface()
 
     def __init__(self):
         self.player = Player()
         self.list_enemies = []
         self.score = 0
 
-        self.main_screen = pg.display.get_surface()
-
-    def draw_score(self):
-        surface = self.font.render('Score: {}'.format(self.score), True, WHITE)
-        self.main_screen.blit(surface, (20, 20))
-
-    def draw_alive_enemies(self):
-        surface = self.font.render(
-            'Enemies: {}'.format(len(self.group_enemy.sprites())),
-            True,
-            WHITE,
-        )
-        self.main_screen.blit(surface, (20, 40))
+        self.layout_map = Map()
+        self.layout_score = Score()
+        self.layout_alive_enemies = AliveEnemies()
 
     def generate_enemies(self):
         if len(self.group_enemy.sprites()) <= 20:
@@ -41,15 +30,17 @@ class GameController:
 
     def draw(self):
         self.generate_enemies()
-        self.draw_score()
-        self.draw_alive_enemies()
-
         self.player.update()
 
         self.group_enemy.draw(self.main_screen)
         self.group_enemy.update(
-            playerRadius=self.player.rect_radius, playerRect=self.player.rect
+            playerRadius=self.player.rect_radius,
+            playerRect=self.player.rect,
         )
+
+        self.layout_map.draw()
+        self.layout_score.draw(score=self.score)
+        self.layout_alive_enemies.draw(group=self.group_enemy.sprites())
 
     def events(self, event, pos_mouse):
         self.player.events(event)

@@ -2,15 +2,15 @@ from random import randint
 
 import pygame as pg
 
-BLACK = (0, 0, 0)
+from .particles import create_particles, draw_particles
+
 RED = (255, 0, 0)
-WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
 
-def get_pos_center() -> tuple[float, float]:
+def get_pos_center() -> tuple[int, int]:
     width, height = pg.display.get_window_size()
-    return width / 2, height / 2
+    return int(width / 2), int(height / 2)
 
 
 def gen_pos_random() -> tuple[int, int]:
@@ -20,59 +20,56 @@ def gen_pos_random() -> tuple[int, int]:
     return pox_x, pox_y
 
 
-class Entity(pg.sprite.Sprite):
-    color = YELLOW
+def update_moviment(velocity: float, pos: float, posCenter: int) -> float:
+    if pos >= posCenter:
+        return -velocity
+    elif pos in range(posCenter - 10, posCenter + 10):
+        return 0
+    else:
+        return velocity
 
+
+class Entity(pg.sprite.Sprite):
     def __init__(self, *groups) -> None:
         super().__init__(*groups)
-        self.radius = 32
 
-        self.image = pg.Surface((self.radius, self.radius))
-
+        self.image = pg.image.load('static/image/nave1.png')
+        self.radius = self.image.get_width()
         self.rect = self.image.get_rect()
         self.rect.topleft = gen_pos_random()
 
+        self.list_particles = []
+
 
 class Enemy(Entity):
-    speed = 3
+    vel = 3
 
     def movement(self):
         c_w, c_h = get_pos_center()
+        pos_X = update_moviment(self.vel, self.rect.x, c_w)
+        pos_Y = update_moviment(self.vel, self.rect.y, c_h)
 
-        pos_X = -self.speed if self.rect.x >= c_w else self.speed
-        pos_Y = -self.speed if self.rect.y >= c_h else self.speed
-
-        if self.alive() and self.rect.topleft != get_pos_center():
+        if self.alive():
             self.rect.move_ip(pos_X, pos_Y)
 
-    def animation(self, playerRectRadius):
-        if self.rect.colliderect(playerRectRadius):
-            pass
+    def draw_particles(self):
+        if len(self.list_particles) <= 33:
+            create_particles(self.list_particles, self.rect)
+            draw_particles(self.list_particles)
 
-    def collide_radius(self, playerRectRadius):
-        if self.rect.colliderect(playerRectRadius):
-            self.color = RED
-            self.speed = 2
-            self.radius = 24
+    def collide_radius(self, **kwargs):
+        if self.rect.colliderect(kwargs['playerRadius']):
+            self.vel = 2
 
-    def collide_death(self, playerRect):
-        if self.rect.colliderect(playerRect):
+    def collide_and_die(self, **kwargs):
+        if self.rect.colliderect(kwargs['playerRect']):
             self.kill()
 
     def update(self, *args, **kwargs):
         self.movement()
-        self.collide_radius(kwargs['playerRadius'])
-        self.collide_death(kwargs['playerRect'])
-
-        pg.draw.circle(
-            pg.display.get_surface(),
-            self.color,
-            self.rect.center,
-            self.radius / 3,
-            0,
-        )
-
-        self.animation(kwargs['playerRadius'])
+        self.draw_particles()
+        self.collide_radius(**kwargs)
+        self.collide_and_die(**kwargs)
 
     def events(self, event, **kwargs):
         pass
