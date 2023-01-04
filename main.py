@@ -4,7 +4,7 @@ import pygame as pg
 
 TITLE = 'Pleiades Outpost'
 FRAME = 30
-DISPLAY = 1000, 1000
+DISPLAY = (1000, 1000)
 
 
 class Main:
@@ -15,8 +15,8 @@ class Main:
             DISPLAY, pg.SCALED | pg.RESIZABLE
         )
 
-        # soundtrack = pg.mixer.Sound('static/soundtrack/main.mp3')
-        # soundtrack.play(-1)
+        soundtrack = pg.mixer.Sound('static/soundtrack/main.mp3')
+        soundtrack.play(-1)
 
         from src.game import GameController
 
@@ -37,8 +37,7 @@ class Main:
             if event.type == pg.QUIT:
                 quit()
 
-            pos_mouse = pg.mouse.get_pos()
-            self.game_controller.events(event, pos_mouse)
+            self.game_controller.events(event)
 
     def update(self):
         self.clock.tick(FRAME)

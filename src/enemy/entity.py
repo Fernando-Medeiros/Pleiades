@@ -9,12 +9,12 @@ YELLOW = (255, 255, 0)
 
 
 def get_pos_center() -> tuple[int, int]:
-    width, height = pg.display.get_window_size()
+    width, height = pg.display.get_surface().get_size()
     return int(width / 2), int(height / 2)
 
 
 def gen_pos_random() -> tuple[int, int]:
-    width, height = pg.display.get_window_size()
+    width, height = pg.display.get_surface().get_size()
     pox_x = randint(-width, width * 2)
     pox_y = randint(-height, height * 2)
     return pox_x, pox_y
@@ -29,9 +29,11 @@ def update_movement(velocity: float, pos: float, posCenter: int) -> float:
         return velocity
 
 
-class Entity(pg.sprite.Sprite):
-    def __init__(self, *groups) -> None:
+class Enemy(pg.sprite.Sprite):
+    def __init__(self, *groups):
         super().__init__(*groups)
+        self.life = 25
+        self.speed = 3
 
         self.image = pg.image.load('static/image/nave1.png')
         self.radius = self.image.get_width()
@@ -40,17 +42,17 @@ class Entity(pg.sprite.Sprite):
 
         self.list_particles = []
 
-
-class Enemy(Entity):
-    vel = 3
-
     def movement(self):
         c_w, c_h = get_pos_center()
-        pos_X = update_movement(self.vel, self.rect.x, c_w)
-        pos_Y = update_movement(self.vel, self.rect.y, c_h)
+        pos_X = update_movement(self.speed, self.rect.x, c_w)
+        pos_Y = update_movement(self.speed, self.rect.y, c_h)
 
         if self.alive():
             self.rect.move_ip(pos_X, pos_Y)
+
+    def animate(self):
+        angle = 90
+        self.image = pg.transform.rotate(self.image, angle)
 
     def draw_particles(self):
         if len(self.list_particles) <= 33:
@@ -59,13 +61,21 @@ class Enemy(Entity):
 
     def collide_radius(self, **kwargs):
         if self.rect.colliderect(kwargs['playerRadius']):
-            self.vel = 2
+            self.speed = 2
 
     def collide_and_die(self, **kwargs):
         if self.rect.colliderect(kwargs['playerRect']):
+            kwargs['playerLife'].life -= 1
+            self.kill()
+
+    def check_life_and_die(self):
+        if self.life <= 0:
             self.kill()
 
     def update(self, *args, **kwargs):
+        self.check_life_and_die()
+
+        self.animate()
         self.movement()
         self.draw_particles()
         self.collide_radius(**kwargs)
