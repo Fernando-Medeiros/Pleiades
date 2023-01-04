@@ -1,22 +1,38 @@
-- [x] **main.py**
+## Main
   - [x] Caption
   - [x] Clock - Frames
   - [x] Display
-- [x] **player.py**
-  - [ ] Animation (Radius, Sprite)
+
+## Player
+  - [ ] Graphics
+    - [ ] Radius
+    - [x] Sprite
   - [ ] Collision and Attack
   - [x] Radius
   - [x] Sprite
-- [x] **enemy.py**
-  - [ ] Animation (Sprite)
+
+## Enemy
+  - [x] Graphics
+    - [ ] Explosion
+    - [x] Sprite
   - [x] Movement
   - [x] Particles
   - [x] Sprites
   - [x] Collision with Radius and Player
-- [x] **layout**
+
+
+## Layout
+- [x] HUD (Head-Up Display)
   - [x] Enemies
-  - [ ] Fragments (currency trading)
-  - [ ] Life
+  - [x] Fragments (currency trading)
+  - [x] Life
   - [x] Map
   - [x] Score
-  - [ ] Upgrades (Damage, Special)
+  - [x] Stage
+- [x] UI (Menu)
+  - [x] Add Power
+  - [x] Add Defense
+  - [x] Add Radius
+  - [x] Add Speed
+  - [x] Restore Health
+- [x] UI (Status)
