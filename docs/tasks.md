@@ -7,7 +7,7 @@
   - [ ] Graphics
     - [ ] Radius
     - [x] Sprite
-  - [ ] Collision and Attack
+  - [ ] Collision and Attack (tests)
   - [x] Radius
   - [x] Sprite
 
@@ -36,3 +36,8 @@
   - [x] Add Speed
   - [x] Restore Health
 - [x] UI (Status)
+- [ ] UI (Rank by Score)
+
+## Save Progress (.Json)
+- [ ] Save
+- [ ] Load

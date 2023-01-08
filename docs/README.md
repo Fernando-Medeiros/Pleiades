@@ -4,8 +4,8 @@
 </div>
 
 <div align="center">
-<h3>V.0.3</h3>
-<img width=375 src="img/v.0.3.png">
+<h3>V.0.4</h3>
+<img width=375 src="img/v.0.4.png">
 </div>
 
 <br>
@@ -16,6 +16,10 @@ O posto avançado das Pleiades é um jogo do gênero **Tower Defense** no estilo
 
 
 > [Progresso do jogo ---> Tasks.md](tasks.md)
+
+> [Imagens das versões](img/)
+
+> [Ex. Imagem base do jogo](img/ex-base.png)
 
 
 ## Resumo
@@ -73,10 +77,12 @@ python main.py
 .
 ├── docs
 │   ├── img
+│   │   ├── ex-base.png
 │   │   ├── v.0.1.png
 │   │   ├── v.0.2.png
 │   │   ├── v.0.3_1.png
-│   │   └── v.0.3.png
+│   │   ├── v.0.3.png
+│   │   └── v.0.4.png
 │   ├── README.md
 │   └── tasks.md
 ├── main.py
@@ -90,8 +96,12 @@ python main.py
 │   │   ├── hud.py
 │   │   ├── menu.py
 │   │   └── status.py
-│   └── player
-│       └── entity.py
+│   ├── player
+│   │   ├── cannon.py
+│   │   ├── entity.py
+│   │   └── radius.py
+│   └── stage
+│       └── stages.py
 └── static
     ├── image
     │   ├── credit.txt
@@ -101,7 +111,7 @@ python main.py
         ├── credit.txt
         └── main.mp3
 
-9 directories, 20 files
+10 directories, 25 files
 ```
 
 ## Créditos
