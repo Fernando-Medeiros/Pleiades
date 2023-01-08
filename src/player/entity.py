@@ -1,66 +1,74 @@
 import pygame as pg
 
-GREEN = (0, 255, 0)
-RED = (200, 0, 0)
+from .cannon import Cannon
+from .radius import Radius
+
+RED = (255, 0, 0)
 WHITE = (255, 255, 255)
-YELLOW = (255, 255, 0)
 
 main_screen = pg.display.get_surface()
 
 
-def pos_center(radius: int) -> tuple[float, float]:
+def get_pos_center(radius: int) -> tuple[float, float]:
     width, height = main_screen.get_size()
     return (width / 2) - (radius / 2), (height / 2) - (radius / 2)
 
 
-class Radius:
-    radius = 28
-
-    def __init__(self):
-        self.field = pg.rect.Rect
-
-    def draw_radius(self, color, radius, width: int = 0) -> pg.rect.Rect:
-        return pg.draw.circle(
-            main_screen,
-            color,
-            pos_center(-self.radius),
-            radius,
-            width,
-        )
-
-    def update(self, color, radius, width):
-        self.field = self.draw_radius(color, radius, width)
-
-
 class Player:
+    radius_life = Radius()
+    radius_vision = Radius()
+    cannon = Cannon()
+
     def __init__(self):
-        self.defense = 10
-        self.life = 25
-        self.power = 5
+        self.cannons = 3
+        self.defense = 5
+        self.life = 55
+        self.power = 1
         self.radius = 28
         self.speed = 3
 
+        self.score = 0
+        self.fragments = 0
+
         self.image = pg.image.load('static/image/nave2.png')
-        self.rect = self.draw_player()
+        self.rect = pg.rect.Rect
 
-        self.field_of_life = Radius()
-        self.field_of_vision = Radius()
-
-    def animate(self):
+    def _animate_sprite(self):
         angle = 90
         self.image = pg.transform.rotate(self.image, angle)
 
-    def draw_player(self) -> pg.rect.Rect:
-        return main_screen.blit(self.image, pos_center(28))
+    def _draw_player(self) -> pg.rect.Rect:
+        return main_screen.blit(self.image, get_pos_center(28))
 
     def update(self, *args, **kwargs):
         self.radius = self.image.get_width()
 
-        self.animate()
-        self.draw_player()
+        self._animate_sprite()
+        self.rect = self._draw_player()
 
-        self.field_of_life.update(RED, self.life * 4, 1)
-        self.field_of_vision.update(WHITE, self.radius * 4, 3)
+        self.radius_life.update(
+            color=RED,
+            radius=self.life * 1.3,
+            posCenter=get_pos_center(-28),
+            width=1,
+        )
+        self.radius_vision.update(
+            color=WHITE,
+            radius=self.radius * 4,
+            posCenter=get_pos_center(-28),
+            width=1,
+        )
+
+        for index in self.radius_vision.get_collisions(kwargs['l_enemies']):
+            self.cannon.load_target(kwargs['l_enemies'][index])
+
+        self.cannon.remove_target()
+        self.cannon.draw(self.speed, self.rect.center)
 
     def events(self, event):
-        pass
+        ...
+
+    def __repr__(self) -> str:
+        return 'Player -> life: {}, center: {}'.format(
+            self.life, self.rect.center
+        )
