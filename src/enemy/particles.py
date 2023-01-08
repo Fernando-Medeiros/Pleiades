@@ -7,16 +7,15 @@ WHITE = (255, 255, 255)
 
 def get_direction(rect) -> tuple[int, int]:
     width, height = pg.display.get_window_size()
-    d_x, d_y = (-1, 1) if rect.y > height / 2 else (1, -1)
-    return d_x, d_y
+    return (-1, 1) if rect.y > height / 2 else (1, -1)
 
 
 def create_particles(listParticles: list, rect) -> None:
-    x, y = rect.center
+    c_x, c_y = rect.center
     d_x, d_y = get_direction(rect)
     listParticles.append(
         {
-            'loc': {'x': x, 'y': y},
+            'loc': {'x': c_x, 'y': c_y},
             'vel': {'x': randint(0, 20) / 10 - d_x, 'y': d_y},
             'timer': randint(1, 4),
         }
